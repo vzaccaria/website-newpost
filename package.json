@@ -1,0 +1,24 @@
+{
+  "name": "website-newpost",
+  "version": "0.0.1",
+  "description": "your description here",
+  "bin": {
+    "website-newpost": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Vittorio Zaccaria",
+  "license": "BSD",
+  "dependencies": {
+    "bluebird": "^2.9.6",
+    "co": "^4.1.0",
+    "docopt": "~0.4.1",
+    "lodash": "^3.1.0",
+    "moment": "^2.9.0",
+    "shelljs": "*",
+    "string": "^3.0.0",
+    "watchman": "^0.1.8"
+  }
+}
