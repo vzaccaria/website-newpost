@@ -31,9 +31,14 @@ get-options = ->
 
 main = ->*
     { title, category, edit, file } = get-options!
+    console.log(get-options!)
+
     if edit
         filename = "#{$(title.toLowerCase()).dasherize()}.md"
         name = moment().format("YYYY-MM-DD") + "-#filename"
+        urlname = "#{$(title.toLowerCase()).dasherize()}.html"
+        urldata = moment().format('YYYY/MM/DD')
+        urlname = "http://www.vittoriozaccaria.net/\#/#category/#urldata/#urlname"
         content = """
         ---
         title: #title
@@ -43,29 +48,25 @@ main = ->*
         category : #category
         tags : ['']
         ---
+
+        This post will be available at [this address](#urlname)
         """
+        console.log(content)
         year = moment().format('YYYY')
         month = moment().format('MM')
         day = moment().format('DD')
 
         yield exec("mkdir -p _drafts")
         content.to("_drafts/#name")
-
-        commands = [
-            exec "open _drafts/#name -a 'MacDown'"
-        ]
-        yield commands
+        yield exec "open _drafts/#name -a 'MacDown'"
     else
-      commands = [
-            exec "cp #file _posts"
-            exec "git add _posts"
-            exec "git commit -m 'publish post'"
-      ]
-      yield commands
+      yield exec "cp #file _posts"
+      yield exec "git add _posts/*"
+      yield exec "git commit -m 'publish post'"
 
 
 
 
 
-co(main).then ->
-    console.log "done."
+co(main).then( ,(e) ->
+    console.log e)

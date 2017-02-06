@@ -36,25 +36,30 @@
     };
   };
   main = function*(){
-    var ref$, title, category, edit, file, filename, name, content, year, month, day, commands;
+    var ref$, title, category, edit, file, filename, name, urlname, urldata, content, year, month, day;
     ref$ = getOptions(), title = ref$.title, category = ref$.category, edit = ref$.edit, file = ref$.file;
+    console.log(getOptions());
     if (edit) {
       filename = $(title.toLowerCase()).dasherize() + ".md";
       name = moment().format("YYYY-MM-DD") + ("-" + filename);
-      content = "---\ntitle: " + title + "\ndate: " + moment().format('YYYY-MM-DD') + "\n\nlayout: post\ncategory : " + category + "\ntags : ['']\n---";
+      urlname = $(title.toLowerCase()).dasherize() + ".html";
+      urldata = moment().format('YYYY/MM/DD');
+      urlname = "http://www.vittoriozaccaria.net/#/" + category + "/" + urldata + "/" + urlname;
+      content = "---\ntitle: " + title + "\ndate: " + moment().format('YYYY-MM-DD') + "\n\nlayout: post\ncategory : " + category + "\ntags : ['']\n---\n\nThis post will be available at [this address](" + urlname + ")";
+      console.log(content);
       year = moment().format('YYYY');
       month = moment().format('MM');
       day = moment().format('DD');
       yield exec("mkdir -p _drafts");
       content.to("_drafts/" + name);
-      commands = [exec("open _drafts/" + name + " -a 'MacDown'")];
-      yield commands;
+      yield exec("open _drafts/" + name + " -a 'MacDown'");
     } else {
-      commands = [exec("cp " + file + " _posts"), exec("git add _posts"), exec("git commit -m 'publish post'")];
-      yield commands;
+      yield exec("cp " + file + " _posts");
+      yield exec("git add _posts/*");
+      yield exec("git commit -m 'publish post'");
     }
   };
-  co(main).then(function(){
-    return console.log("done.");
+  co(main).then(void 8, function(e){
+    return console.log(e);
   });
 }).call(this);
